@@ -11,7 +11,7 @@ namespace MessengerAnalysis
     class Program
     {
         //heartlaughwowsadangrylikedislike
-        const string EmojiCrossbones = "\u00e2\u0098\u00a0"; //0xE2 0x98 0xA0
+        const string EmojiCrossbones = "\u00e2\u0098\u00a0\u00ef\u00b8\u008f"; //0xE2 0x98 0xA0
         const string EmojiLaugh = "\u00f0\u009f\u0098\u0086";
         const string EmojiSkull = "\u00f0\u009f\u0092\u0080"; //0xF0 0x9F 0x92 0x80
         const string EmojiAlien = "\u00f0\u009f\u0091\u00bd"; //0xF0 0x9F 0x91 0xBD
@@ -158,6 +158,8 @@ namespace MessengerAnalysis
             }
 
             Log.WriteLine("Processing " + root.messages.Count + " messages sent in '" + root.title + "' over a period of " + AllDates.Count + " days");
+            var start1=start.DateTime;
+            Log.WriteLine("First message sent on " + start1.ToShortDateString() + " at " + start1.ToShortTimeString());
             Log.WriteLine("Last message sent on " + end.ToShortDateString() + " at " + end.ToShortTimeString());
 
             Dictionary<string, int> KickedOutCounter = new Dictionary<string, int>();
@@ -394,30 +396,7 @@ namespace MessengerAnalysis
             Log.WriteBoldLine("MESSAGES SENT:");
             Helper.WriteStats(GlobalStats, UniversalStats, "MessagesSent");
 
-            Log.WriteBoldLine("GIFS SENT:");
-            Helper.WriteStats(GlobalStats, UniversalStats, "GifsSent");
-            Helper.WriteStatsProportional(GlobalStats, UniversalStats, "GifsSent");
 
-            Log.WriteBoldLine("IMAGES SENT:");
-            Helper.WriteStats(GlobalStats, UniversalStats, "ImagesSent");
-            Helper.WriteStatsProportional(GlobalStats, UniversalStats, "ImagesSent");
-
-            Log.WriteBoldLine("LINKS SENT:");
-            Helper.WriteStats(GlobalStats, UniversalStats, "LinksSent");
-            Helper.WriteStatsProportional(GlobalStats, UniversalStats, "LinksSent");
-
-            Log.WriteBoldLine("MESSAGES SENT ENTIRELY IN ALL CAPS:");
-            Helper.WriteStats(GlobalStats, UniversalStats, "AllCapsSent");
-            Helper.WriteStatsProportional(GlobalStats, UniversalStats, "AllCapsSent");
-
-            Log.WriteBoldLine("SWEARING:");
-            Helper.WriteStats(GlobalStats, UniversalStats, "SwearingSent");
-            Helper.WriteStatsProportional(GlobalStats, UniversalStats, "SwearingSentMono");
-
-
-
-            Log.WriteBoldLine("CROSSBONE REACTS GIVEN:");
-            Helper.WriteStats(GlobalStats, UniversalStats, "GaveCrossbones");
 
             Log.WriteBoldLine("LAUGHING REACTS GIVEN:");
             Helper.WriteStats(GlobalStats, UniversalStats, "GaveLaugh");
@@ -425,19 +404,18 @@ namespace MessengerAnalysis
             Log.WriteBoldLine("SKULL REACTS GIVEN:");
             Helper.WriteStats(GlobalStats, UniversalStats, "GaveSkull");
 
+            Log.WriteBoldLine("CROSSBONE REACTS GIVEN:");
+            Helper.WriteStats(GlobalStats, UniversalStats, "GaveCrossbones");
+
             Log.WriteBoldLine("ALIEN REACTS GIVEN:");
             Helper.WriteStats(GlobalStats, UniversalStats, "GaveAlien");
 
             Log.WriteBoldLine("GOBLIN REACTS GIVEN:");
-            Helper.WriteStats(GlobalStats, UniversalStats, "GaveHowl");
+            Helper.WriteStats(GlobalStats, UniversalStats, "GaveGoblin");
 
             Log.WriteBoldLine("HOWL REACTS GIVEN:");
-            Helper.WriteStats(GlobalStats, UniversalStats, "GaveDislike");
+            Helper.WriteStats(GlobalStats, UniversalStats, "GaveHowl");
 
-
-            Log.WriteBoldLine("CROSSBONES REACTS RECEIVED:");
-            Helper.WriteStats(GlobalStats, UniversalStats, "ReceivedCrossBones");
-            Helper.WriteStatsProportional(GlobalStats, UniversalStats, "ReceivedCrossBones");
 
             Log.WriteBoldLine("LAUGH REACTS RECEIVED:");
             Helper.WriteStats(GlobalStats, UniversalStats, "ReceivedLaugh");
@@ -446,6 +424,10 @@ namespace MessengerAnalysis
             Log.WriteBoldLine("SKULL REACTS RECEIVED:");
             Helper.WriteStats(GlobalStats, UniversalStats, "ReceivedSkull");
             Helper.WriteStatsProportional(GlobalStats, UniversalStats, "ReceivedSkull");
+
+            Log.WriteBoldLine("CROSSBONES REACTS RECEIVED:");
+            Helper.WriteStats(GlobalStats, UniversalStats, "ReceivedCrossbones");
+            Helper.WriteStatsProportional(GlobalStats, UniversalStats, "ReceivedCrossbones");
 
             Log.WriteBoldLine("ALIEN REACTS RECEIVED:");
             Helper.WriteStats(GlobalStats, UniversalStats, "ReceivedAlien");
@@ -458,10 +440,6 @@ namespace MessengerAnalysis
             Log.WriteBoldLine("GOBLIN REACTS RECEIVED:");
             Helper.WriteStats(GlobalStats, UniversalStats, "ReceivedGoblin");
             Helper.WriteStatsProportional(GlobalStats, UniversalStats, "ReceivedGoblin");
-
-            Log.WriteBoldLine("AVERAGE MESSAGE LENGTH:");
-            foreach (var user in AverageMessageLengths.OrderBy(x => x.Value))
-                Log.WriteLine(user.Key + ": " + user.Value);
 
             //USER-SPECIFIC STATS
             Log.WriteLine();
@@ -478,34 +456,9 @@ namespace MessengerAnalysis
             }
 
             //APPRECIATION
-            Log.WriteBoldLine("APPRECIATION METER:");
-            Helper.WriteStats(GlobalStats, UniversalStats, "AppreciationMeter");
-
-            //IGNORED
-            Log.WriteBoldLine("MOST IGNORED:");
-            Dictionary<string, int> ResponseCounter = new Dictionary<string, int>();
-            foreach (var stat in GlobalStats)
-            {
-                foreach (var user in stat.Value.RespondedTo)
-                {
-                    if (ResponseCounter.ContainsKey(user.Key))
-                        ResponseCounter[user.Key] += user.Value;
-                    else
-                        ResponseCounter.Add(user.Key, user.Value);
-                }
-            }
-            Dictionary<string, double> IgnoredMessages = new Dictionary<string, double>();
-            foreach (var user in ResponseCounter)
-                IgnoredMessages.Add(user.Key, Math.Round(100 - (100 * (double)user.Value) / (GlobalStats[user.Key].MessagesSent), 2));
-            foreach(var person in IgnoredMessages.OrderBy(x => x.Value).Select(x => x.Key + " (" + x.Value + "% of messages sent)"))
-                Log.WriteSubtleishLine(person);
-
-            //KICKED OUT
             Log.WriteLine();
-            Log.WriteBoldLine("MOST KICKED OUT:");
-            foreach (var person in KickedOutCounter.OrderBy(x => x.Value).Select(x => x.Key + " (" + x.Value + " times)"))
-                Log.WriteSubtleishLine(person);
-
+            Log.WriteBoldLine("SUSTAINED PATTER LEVEL:");
+            Helper.WriteStats(GlobalStats, UniversalStats, "AppreciationMeter");
 
 
             //CSV FILES + PLOTS
@@ -514,13 +467,12 @@ namespace MessengerAnalysis
             Log.WriteLine("Creating csv and html files...");
             string plots = "";
             plots += CreateCsvAndJavascript("messages.csv", "MessagesSent", "Messages sent");
-            plots += "," + CreateActiveTimesPlot(ActiveTimes);
             plots += "," + CreateCsvAndJavascript("appreciation.csv", "AppreciationMeter", "Appreciation");
-            plots += "," + CreateCsvAndJavascript("crossbone.csv", "ReceivedCrossBones", "Received crossbone reacts");
-            plots += "," + CreateCsvAndJavascript("alien.csv", "ReceivedAlien", "Received alien reacts");
             plots += "," + CreateCsvAndJavascript("laugh.csv", "ReceivedLaugh", "Received laugh reacts");
-            plots += "," + CreateCsvAndJavascript("howl.csv", "ReceivedHowl", "Received howl reacts");
             plots += "," + CreateCsvAndJavascript("skull.csv", "ReceivedSkull", "Received skull reacts");
+            plots += "," + CreateCsvAndJavascript("crossbone.csv", "ReceivedCrossbones", "Received crossbone reacts");
+            plots += "," + CreateCsvAndJavascript("alien.csv", "ReceivedAlien", "Received alien reacts");
+            plots += "," + CreateCsvAndJavascript("howl.csv", "ReceivedHowl", "Received howl reacts");
             plots += "," + CreateCsvAndJavascript("goblin.csv", "ReceivedGoblin", "Received goblin reacts");
             
             
