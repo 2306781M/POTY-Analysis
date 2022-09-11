@@ -31,21 +31,21 @@ namespace MessengerAnalysis
                 SwearingSent += stats.SwearingSent;
                 SwearingSentMono += stats.SwearingSentMono;
 
-                GaveHeart += stats.GaveHeart;
+                GaveCrossbones += stats.GaveCrossbones;
                 GaveLaugh += stats.GaveLaugh;
-                GaveWow += stats.GaveWow;
-                GaveAngry += stats.GaveAngry;
-                GaveLike += stats.GaveLike;
+                GaveSkull += stats.GaveSkull;
+                GaveAlien += stats.GaveAlien;
+                GaveGoblin += stats.GaveGoblin;
                 GaveDislike += stats.GaveDislike;
-                GaveSad += stats.GaveSad;
+                GaveHowl += stats.GaveHowl;
 
-                ReceivedHeart += stats.ReceivedHeart;
+                ReceivedCrossbones += stats.ReceivedCrossbones;
                 ReceivedLaugh += stats.ReceivedLaugh;
-                ReceivedWow += stats.ReceivedWow;
-                ReceivedAngry += stats.ReceivedAngry;
-                ReceivedLike += stats.ReceivedLike;
+                ReceivedSkull += stats.ReceivedSkull;
+                ReceivedAlien += stats.ReceivedAlien;
+                ReceivedGoblin += stats.ReceivedGoblin;
                 ReceivedDislike += stats.ReceivedDislike;
-                ReceivedSad += stats.ReceivedSad;
+                ReceivedHowl += stats.ReceivedHowl;
 
                 AppreciationMeter += stats.AppreciationMeter;
             }
@@ -53,26 +53,26 @@ namespace MessengerAnalysis
             {
                 int mostgivencount = 0;
                 string mostgivenreaction = "None given";
-                Helper.MostSomethingHelper(ref mostgivencount, ref mostgivenreaction, GaveAngry, "Angry");
+                Helper.MostSomethingHelper(ref mostgivencount, ref mostgivenreaction, GaveAlien, "Alien");
                 Helper.MostSomethingHelper(ref mostgivencount, ref mostgivenreaction, GaveDislike, "Dislike");
-                Helper.MostSomethingHelper(ref mostgivencount, ref mostgivenreaction, GaveHeart, "Heart");
+                Helper.MostSomethingHelper(ref mostgivencount, ref mostgivenreaction, GaveCrossbones, "Crossbones");
                 Helper.MostSomethingHelper(ref mostgivencount, ref mostgivenreaction, GaveLaugh, "Laugh");
-                Helper.MostSomethingHelper(ref mostgivencount, ref mostgivenreaction, GaveLike, "Like");
-                Helper.MostSomethingHelper(ref mostgivencount, ref mostgivenreaction, GaveSad, "Sad");
-                Helper.MostSomethingHelper(ref mostgivencount, ref mostgivenreaction, GaveAngry, "Wow");
+                Helper.MostSomethingHelper(ref mostgivencount, ref mostgivenreaction, GaveGoblin, "Goblin");
+                Helper.MostSomethingHelper(ref mostgivencount, ref mostgivenreaction, GaveHowl, "Howl");
+                Helper.MostSomethingHelper(ref mostgivencount, ref mostgivenreaction, GaveSkull, "Skull");
                 return mostgivenreaction;
             }
             public string MostReceivedReaction()
             {
                 int mostreceivedcount = 0;
                 string mostreceivedreaction = "None received";
-                Helper.MostSomethingHelper(ref mostreceivedcount, ref mostreceivedreaction, ReceivedAngry, "Angry");
+                Helper.MostSomethingHelper(ref mostreceivedcount, ref mostreceivedreaction, ReceivedAlien, "Alien");
                 Helper.MostSomethingHelper(ref mostreceivedcount, ref mostreceivedreaction, ReceivedDislike, "Dislike");
-                Helper.MostSomethingHelper(ref mostreceivedcount, ref mostreceivedreaction, ReceivedHeart, "Heart");
+                Helper.MostSomethingHelper(ref mostreceivedcount, ref mostreceivedreaction, ReceivedCrossbones, "Crossbones");
                 Helper.MostSomethingHelper(ref mostreceivedcount, ref mostreceivedreaction, ReceivedLaugh, "Laugh");
-                Helper.MostSomethingHelper(ref mostreceivedcount, ref mostreceivedreaction, ReceivedLike, "Like");
-                Helper.MostSomethingHelper(ref mostreceivedcount, ref mostreceivedreaction, ReceivedSad, "Sad");
-                Helper.MostSomethingHelper(ref mostreceivedcount, ref mostreceivedreaction, ReceivedAngry, "Wow");
+                Helper.MostSomethingHelper(ref mostreceivedcount, ref mostreceivedreaction, ReceivedGoblin, "Goblin");
+                Helper.MostSomethingHelper(ref mostreceivedcount, ref mostreceivedreaction, ReceivedHowl, "Howl");
+                Helper.MostSomethingHelper(ref mostreceivedcount, ref mostreceivedreaction, ReceivedSkull, "Skull");
                 return mostreceivedreaction;
             }
 
@@ -112,21 +112,21 @@ namespace MessengerAnalysis
             public int SwearingSent { get; set; }
             public int SwearingSentMono { get; set; }
 
-            public int GaveHeart { get; set; }
+            public int GaveCrossbones { get; set; }
             public int GaveLaugh { get; set; }
-            public int GaveWow { get; set; }
-            public int GaveAngry { get; set; }
-            public int GaveLike { get; set; }
+            public int GaveSkull { get; set; }
+            public int GaveAlien { get; set; }
+            public int GaveGoblin { get; set; }
             public int GaveDislike { get; set; }
-            public int GaveSad { get; set; }
+            public int GaveHowl { get; set; }
 
-            public int ReceivedHeart { get; set; }
+            public int ReceivedCrossbones { get; set; }
             public int ReceivedLaugh { get; set; }
-            public int ReceivedWow { get; set; }
-            public int ReceivedAngry { get; set; }
-            public int ReceivedLike { get; set; }
+            public int ReceivedSkull { get; set; }
+            public int ReceivedAlien { get; set; }
+            public int ReceivedGoblin { get; set; }
             public int ReceivedDislike { get; set; }
-            public int ReceivedSad { get; set; }
+            public int ReceivedHowl { get; set; }
             public double AppreciationMeter { get; set; }
         }
     }
