@@ -11,13 +11,12 @@ namespace MessengerAnalysis
     class Program
     {
         //heartlaughwowsadangrylikedislike
-        const string EmojiHeart = "\u00f0\u009f\u0098\u008d";
+        const string EmojiCrossbones = "\u00e2\u0098\u00a0"; //0xE2 0x98 0xA0
         const string EmojiLaugh = "\u00f0\u009f\u0098\u0086";
-        const string EmojiWow = "\u00f0\u009f\u0098\u00ae";
-        const string EmojiAngry = "\u00f0\u009f\u0098\u00a0";
-        const string EmojiSad = "\u00f0\u009f\u0098\u00a2";
-        const string EmojiLike = "\u00f0\u009f\u0091\u008d";
-        const string EmojiDislike = "\u00f0\u009f\u0091\u008e";
+        const string EmojiSkull = "\u00f0\u009f\u0092\u0080"; //0xF0 0x9F 0x92 0x80
+        const string EmojiAlien = "\u00f0\u009f\u0091\u00bd"; //0xF0 0x9F 0x91 0xBD
+        const string EmojiGoblin = "\u00f0\u009f\u0091\u00ba"; //0xF0 0x9F 0x91 0xBA
+        const string EmojiHowl = "\u00f0\u009f\u0090\u00ba"; //0xF0 0x9F 0x90 0xBA
 
         public static class Log
         {
@@ -326,38 +325,35 @@ namespace MessengerAnalysis
                         var actorstats = AllDates[messageDate][reaction.actor];
                         switch (reaction.reaction)
                         {
-                            case EmojiHeart:
-                                senderstats.ReceivedHeart++;
-                                actorstats.GaveHeart++;
-                                senderstats.AppreciationMeter++;
+                            case EmojiCrossbones:
+                                senderstats.ReceivedCrossbones++;
+                                actorstats.GaveCrossbones++;
+                                senderstats.AppreciationMeter+=3;
                                 break;
                             case EmojiLaugh:
                                 senderstats.ReceivedLaugh++;
                                 actorstats.GaveLaugh++;
                                 senderstats.AppreciationMeter++;
                                 break;
-                            case EmojiSad:
-                                senderstats.ReceivedSad++;
-                                actorstats.GaveSad++;
+                            case EmojiGoblin:
+                                senderstats.ReceivedGoblin++;
+                                actorstats.GaveGoblin++;
+                                actorstats.GaveGoblin+=3;
                                 break;
-                            case EmojiWow:
-                                senderstats.ReceivedWow++;
-                                actorstats.GaveWow++;
+                            case EmojiSkull:
+                                senderstats.ReceivedSkull++;
+                                actorstats.GaveSkull++;
+                                senderstats.AppreciationMeter+=2;
                                 break;
-                            case EmojiLike:
-                                senderstats.ReceivedLike++;
-                                actorstats.GaveLike++;
-                                senderstats.AppreciationMeter++;
+                            case EmojiHowl:
+                                senderstats.ReceivedHowl++;
+                                actorstats.GaveHowl++;
+                                senderstats.AppreciationMeter+=3;
                                 break;
-                            case EmojiDislike:
-                                senderstats.ReceivedDislike++;
-                                actorstats.GaveDislike++;
-                                senderstats.AppreciationMeter--;
-                                break;
-                            case EmojiAngry:
-                                senderstats.ReceivedAngry++;
-                                actorstats.GaveAngry++;
-                                senderstats.AppreciationMeter--;
+                            case EmojiAlien:
+                                senderstats.ReceivedAlien++;
+                                actorstats.GaveAlien++;
+                                senderstats.AppreciationMeter+=3;;
                                 break;
                         }
                         AllDates[messageDate][reaction.actor] = actorstats;
@@ -420,55 +416,48 @@ namespace MessengerAnalysis
 
 
 
-            Log.WriteBoldLine("HEART REACTIONS GIVEN:");
-            Helper.WriteStats(GlobalStats, UniversalStats, "GaveHeart");
+            Log.WriteBoldLine("CROSSBONE REACTS GIVEN:");
+            Helper.WriteStats(GlobalStats, UniversalStats, "GaveCrossbones");
 
-            Log.WriteBoldLine("LAUGHING REACTIONS GIVEN:");
+            Log.WriteBoldLine("LAUGHING REACTS GIVEN:");
             Helper.WriteStats(GlobalStats, UniversalStats, "GaveLaugh");
 
-            Log.WriteBoldLine("WOW REACTIONS GIVEN:");
-            Helper.WriteStats(GlobalStats, UniversalStats, "GaveWow");
+            Log.WriteBoldLine("SKULL REACTS GIVEN:");
+            Helper.WriteStats(GlobalStats, UniversalStats, "GaveSkull");
 
-            Log.WriteBoldLine("ANGRY REACTIONS GIVEN:");
-            Helper.WriteStats(GlobalStats, UniversalStats, "GaveAngry");
+            Log.WriteBoldLine("ALIEN REACTS GIVEN:");
+            Helper.WriteStats(GlobalStats, UniversalStats, "GaveAlien");
 
-            Log.WriteBoldLine("LIKE REACTIONS GIVEN:");
-            Helper.WriteStats(GlobalStats, UniversalStats, "GaveLike");
+            Log.WriteBoldLine("GOBLIN REACTS GIVEN:");
+            Helper.WriteStats(GlobalStats, UniversalStats, "GaveHowl");
 
-            Log.WriteBoldLine("DISLIKE REACTIONS GIVEN:");
+            Log.WriteBoldLine("HOWL REACTS GIVEN:");
             Helper.WriteStats(GlobalStats, UniversalStats, "GaveDislike");
 
-            Log.WriteBoldLine("SAD REACTIONS GIVEN:");
-            Helper.WriteStats(GlobalStats, UniversalStats, "GaveSad");
 
+            Log.WriteBoldLine("CROSSBONES REACTS RECEIVED:");
+            Helper.WriteStats(GlobalStats, UniversalStats, "ReceivedCrossBones");
+            Helper.WriteStatsProportional(GlobalStats, UniversalStats, "ReceivedCrossBones");
 
-            Log.WriteBoldLine("HEART REACTIONS RECEIVED:");
-            Helper.WriteStats(GlobalStats, UniversalStats, "ReceivedHeart");
-            Helper.WriteStatsProportional(GlobalStats, UniversalStats, "ReceivedHeart");
-
-            Log.WriteBoldLine("LAUGHING REACTIONS RECEIVED:");
+            Log.WriteBoldLine("LAUGH REACTS RECEIVED:");
             Helper.WriteStats(GlobalStats, UniversalStats, "ReceivedLaugh");
             Helper.WriteStatsProportional(GlobalStats, UniversalStats, "ReceivedLaugh");
 
-            Log.WriteBoldLine("WOW REACTIONS RECEIVED:");
-            Helper.WriteStats(GlobalStats, UniversalStats, "ReceivedWow");
-            Helper.WriteStatsProportional(GlobalStats, UniversalStats, "ReceivedWow");
+            Log.WriteBoldLine("SKULL REACTS RECEIVED:");
+            Helper.WriteStats(GlobalStats, UniversalStats, "ReceivedSkull");
+            Helper.WriteStatsProportional(GlobalStats, UniversalStats, "ReceivedSkull");
 
-            Log.WriteBoldLine("ANGRY REACTIONS RECEIVED:");
-            Helper.WriteStats(GlobalStats, UniversalStats, "ReceivedAngry");
-            Helper.WriteStatsProportional(GlobalStats, UniversalStats, "ReceivedAngry");
+            Log.WriteBoldLine("ALIEN REACTS RECEIVED:");
+            Helper.WriteStats(GlobalStats, UniversalStats, "ReceivedAlien");
+            Helper.WriteStatsProportional(GlobalStats, UniversalStats, "ReceivedAlien");
 
-            Log.WriteBoldLine("LIKE REACTIONS RECEIVED:");
-            Helper.WriteStats(GlobalStats, UniversalStats, "ReceivedLike");
-            Helper.WriteStatsProportional(GlobalStats, UniversalStats, "ReceivedLike");
+            Log.WriteBoldLine("HOWL REACTS RECEIVED:");
+            Helper.WriteStats(GlobalStats, UniversalStats, "ReceivedHowl");
+            Helper.WriteStatsProportional(GlobalStats, UniversalStats, "ReceivedHowl");
 
-            Log.WriteBoldLine("DISLIKE REACTIONS RECEIVED:");
-            Helper.WriteStats(GlobalStats, UniversalStats, "ReceivedDislike");
-            Helper.WriteStatsProportional(GlobalStats, UniversalStats, "ReceivedDislike");
-
-            Log.WriteBoldLine("SAD REACTIONS RECEIVED:");
-            Helper.WriteStats(GlobalStats, UniversalStats, "ReceivedSad");
-            Helper.WriteStatsProportional(GlobalStats, UniversalStats, "ReceivedSad");
+            Log.WriteBoldLine("GOBLIN REACTS RECEIVED:");
+            Helper.WriteStats(GlobalStats, UniversalStats, "ReceivedGoblin");
+            Helper.WriteStatsProportional(GlobalStats, UniversalStats, "ReceivedGoblin");
 
             Log.WriteBoldLine("AVERAGE MESSAGE LENGTH:");
             foreach (var user in AverageMessageLengths.OrderBy(x => x.Value))
@@ -527,12 +516,12 @@ namespace MessengerAnalysis
             plots += CreateCsvAndJavascript("messages.csv", "MessagesSent", "Messages sent");
             plots += "," + CreateActiveTimesPlot(ActiveTimes);
             plots += "," + CreateCsvAndJavascript("appreciation.csv", "AppreciationMeter", "Appreciation");
-            plots += "," + CreateCsvAndJavascript("love.csv", "ReceivedHeart", "Received heart emojis");
-            plots += "," + CreateCsvAndJavascript("hate.csv", "ReceivedAngry", "Received angry emojis");
-            plots += "," + CreateCsvAndJavascript("funny.csv", "ReceivedLaugh", "Received laugh emojis");
-            plots += "," + CreateCsvAndJavascript("like.csv", "ReceivedLike", "Received like emojis");
-            plots += "," + CreateCsvAndJavascript("dislike.csv", "ReceivedDislike", "Received dislike emojis");
-            plots += "," + CreateCsvAndJavascript("sad.csv", "ReceivedSad", "Received sad emojis");
+            plots += "," + CreateCsvAndJavascript("crossbone.csv", "ReceivedCrossBones", "Received crossbone reacts");
+            plots += "," + CreateCsvAndJavascript("alien.csv", "ReceivedAlien", "Received alien reacts");
+            plots += "," + CreateCsvAndJavascript("laugh.csv", "ReceivedLaugh", "Received laugh reacts");
+            plots += "," + CreateCsvAndJavascript("howl.csv", "ReceivedHowl", "Received howl reacts");
+            plots += "," + CreateCsvAndJavascript("skull.csv", "ReceivedSkull", "Received skull reacts");
+            plots += "," + CreateCsvAndJavascript("goblin.csv", "ReceivedGoblin", "Received goblin reacts");
             
             
 
