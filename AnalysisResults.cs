@@ -37,6 +37,7 @@ namespace MessengerAnalysis
                 GaveAlien += stats.GaveAlien;
                 GaveGoblin += stats.GaveGoblin;
                 GaveHowl += stats.GaveHowl;
+                GaveReact += stats.GaveReact;
 
                 ReceivedCrossbones += stats.ReceivedCrossbones;
                 ReceivedLaugh += stats.ReceivedLaugh;
@@ -114,6 +115,7 @@ namespace MessengerAnalysis
             public int GaveAlien { get; set; }
             public int GaveGoblin { get; set; }
             public int GaveHowl { get; set; }
+            public int GaveReact { get; set; }
 
             public int ReceivedCrossbones { get; set; }
             public int ReceivedLaugh { get; set; }

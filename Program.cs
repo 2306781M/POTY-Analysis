@@ -6,17 +6,26 @@ using System.Linq;
 using System.Text;
 using static MessengerAnalysis.GroupConvo;
 
+
 namespace MessengerAnalysis
 {
+    
     class Program
     {
+        public static int poty = 0;
+        public static string potywinner = "";
+        public static string potydate = "";
+        public static string potytime = "";
+        public static string potycontent = "";
+        public static List<Photo> potyphoto;
+        public static List<Gif> potygif;
         //heartlaughwowsadangrylikedislike
         const string EmojiCrossbones = "\u00e2\u0098\u00a0\u00ef\u00b8\u008f"; //0xE2 0x98 0xA0
         const string EmojiLaugh = "\u00f0\u009f\u0098\u0086";
         const string EmojiSkull = "\u00f0\u009f\u0092\u0080"; //0xF0 0x9F 0x92 0x80
         const string EmojiAlien = "\u00f0\u009f\u0091\u00bd"; //0xF0 0x9F 0x91 0xBD
         const string EmojiGoblin = "\u00f0\u009f\u0091\u00ba"; //0xF0 0x9F 0x91 0xBA
-        const string EmojiHowl = "\u00f0\u009f\u0090\u00ba"; //0xF0 0x9F 0x90 0xBA
+        const string EmojiHowl = "\u00f0\u009f\u008d\u0089"; //0xF0 0x9F 0x90 0xBA \u00f0\u009f\u0090\u00ba
 
         public static class Log
         {
@@ -320,6 +329,7 @@ namespace MessengerAnalysis
                 //Reactions
                 if (message.reactions != null)
                 {
+                    int patterscore = 0; //senderstats.AppreciationMeter
                     foreach (var reaction in message.reactions)
                     {
                         if (!AllDates[messageDate].ContainsKey(reaction.actor))
@@ -330,36 +340,64 @@ namespace MessengerAnalysis
                             case EmojiCrossbones:
                                 senderstats.ReceivedCrossbones++;
                                 actorstats.GaveCrossbones++;
-                                senderstats.AppreciationMeter+=3;
+                                patterscore+=3;
                                 break;
                             case EmojiLaugh:
                                 senderstats.ReceivedLaugh++;
                                 actorstats.GaveLaugh++;
-                                senderstats.AppreciationMeter++;
+                                patterscore++;
                                 break;
                             case EmojiGoblin:
                                 senderstats.ReceivedGoblin++;
                                 actorstats.GaveGoblin++;
-                                actorstats.GaveGoblin+=3;
+                                patterscore+=3;
                                 break;
                             case EmojiSkull:
                                 senderstats.ReceivedSkull++;
                                 actorstats.GaveSkull++;
-                                senderstats.AppreciationMeter+=2;
+                                patterscore+=2;
                                 break;
                             case EmojiHowl:
                                 senderstats.ReceivedHowl++;
                                 actorstats.GaveHowl++;
-                                senderstats.AppreciationMeter+=3;
+                                patterscore+=3000;
                                 break;
                             case EmojiAlien:
                                 senderstats.ReceivedAlien++;
                                 actorstats.GaveAlien++;
-                                senderstats.AppreciationMeter+=3;;
+                                patterscore+=3;;
                                 break;
                         }
+                        actorstats.GaveReact+=patterscore;
+
                         AllDates[messageDate][reaction.actor] = actorstats;
                     }
+                    // to-do this is where POTY calculation should be
+                    //
+                    // IF current patterscore > previous highest THEN highest = current patterscore AND potywinner = current sendername AND add message somehow?
+                    if (patterscore > poty){
+                        poty=patterscore;
+                        potywinner=message.sender_name;
+                        //DateTimeOffset.FromUnixTimeMilliseconds(root.messages[0].timestamp_ms).DateTime
+                        potydate=messageDate;
+                        if (message.content != null){
+                            potycontent=message.content;
+                        }
+                        //else{potycontent="";}
+                        //if (message.photos != null){
+                        //    potyphoto=message.photos;                          
+                        //}
+                        //else{potygif.Clear();}
+                        //if (message.gifs != null){
+                        //    potygif=message.gifs;
+                        //}
+                        //else{potygif.Clear();}
+                        //potytime=message.timestamp_ms.DateTime.ToShortDateString();
+                    }
+
+                    //
+                    //
+                    senderstats.AppreciationMeter+=patterscore;
                 }
 
                 AllDates[messageDate][message.sender_name] = senderstats;
@@ -416,6 +454,9 @@ namespace MessengerAnalysis
             Log.WriteBoldLine("HOWL REACTS GIVEN:");
             Helper.WriteStats(GlobalStats, UniversalStats, "GaveHowl");
 
+            Log.WriteBoldLine("TOTAL REACTS GIVEN:");
+            Helper.WriteStats(GlobalStats, UniversalStats, "GaveReact");
+
 
             Log.WriteBoldLine("LAUGH REACTS RECEIVED:");
             Helper.WriteStats(GlobalStats, UniversalStats, "ReceivedLaugh");
@@ -455,10 +496,27 @@ namespace MessengerAnalysis
                 user.Value.WriteTalksWith(ref GlobalStats);
             }
 
-            //APPRECIATION
+            //SUSTAINED PATTER
             Log.WriteLine();
             Log.WriteBoldLine("SUSTAINED PATTER LEVEL:");
             Helper.WriteStats(GlobalStats, UniversalStats, "AppreciationMeter");
+
+            //PATTER OF THE YEAR
+            Log.WriteLine();
+            Log.WriteBoldLine("PATTER OF THE YEAR WINNER:");
+            string potytext = potywinner+", with a total patter rating of "+poty.ToString();
+            Log.WriteLine(potytext);
+            Log.WriteSubtleishLine("At: "+potydate);
+            
+            if (potycontent != null){
+                Log.WriteLine("\""+potycontent+"\"");
+            }
+            //if (potyphoto != null){
+            //     //todo                          
+            //}
+            //if (potygif != null){
+            //    //todo
+            //}
 
 
             //CSV FILES + PLOTS
