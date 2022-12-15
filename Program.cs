@@ -13,10 +13,18 @@ namespace MessengerAnalysis
     class Program
     {
         public static int poty = 0;
+        public static int poty2 = 0;
+        public static int poty3 = 0;
         public static string potywinner = "";
+        public static string potywinner2 = "";
+        public static string potywinner3 = "";
         public static string potydate = "";
+        public static string potydate2 = "";
+        public static string potydate3 = "";
         public static string potytime = "";
         public static string potycontent = "";
+        public static string potycontent2 = "";
+        public static string potycontent3 = "";
         public static List<Photo> potyphoto;
         public static List<Gif> potygif;
         //heartlaughwowsadangrylikedislike
@@ -375,24 +383,23 @@ namespace MessengerAnalysis
                     // to-do this is where POTY calculation should be
                     //
                     // IF current patterscore > previous highest THEN highest = current patterscore AND potywinner = current sendername AND add message somehow?
-                    if (patterscore > poty){
-                        poty=patterscore;
-                        potywinner=message.sender_name;
-                        //DateTimeOffset.FromUnixTimeMilliseconds(root.messages[0].timestamp_ms).DateTime
-                        potydate=messageDate;
-                        if (message.content != null){
-                            potycontent=message.content;
+                    if (patterscore > poty3){
+                        poty3=patterscore;
+                        
+                        if (patterscore > poty2){
+                            poty3=poty2;
+                            poty2=patterscore;
+                            if (patterscore > poty){
+                                poty2=poty;
+                                poty=patterscore;
+                                potywinner=message.sender_name;
+                                potydate=messageDate;
+                                if (message.content != null){potycontent=message.content;}
+                            }
+                            else {potywinner2=message.sender_name; potydate2=messageDate; if (message.content != null){potycontent2=message.content;}}
                         }
-                        //else{potycontent="";}
-                        //if (message.photos != null){
-                        //    potyphoto=message.photos;                          
-                        //}
-                        //else{potygif.Clear();}
-                        //if (message.gifs != null){
-                        //    potygif=message.gifs;
-                        //}
-                        //else{potygif.Clear();}
-                        //potytime=message.timestamp_ms.DateTime.ToShortDateString();
+                        else {potywinner3=message.sender_name; potydate3=messageDate; if (message.content != null){potycontent3=message.content;}}
+                        
                     }
 
                     //
@@ -511,12 +518,28 @@ namespace MessengerAnalysis
             if (potycontent != null){
                 Log.WriteLine("\""+potycontent+"\"");
             }
-            //if (potyphoto != null){
-            //     //todo                          
-            //}
-            //if (potygif != null){
-            //    //todo
-            //}
+
+            //SECOND
+            Log.WriteLine();
+            Log.WriteBoldLine("SECOND PLACE:");
+            string potytext2 = potywinner2+", with a total patter rating of "+poty2.ToString();
+            Log.WriteLine(potytext);
+            Log.WriteSubtleishLine("At: "+potydate2);
+
+            if (potycontent2 != null){
+                Log.WriteLine("\""+potycontent2+"\"");
+            }
+
+             //THIRD
+            Log.WriteLine();
+            Log.WriteBoldLine("THIRD PLACE:");
+            string potytext3 = potywinner3+", with a total patter rating of "+poty3.ToString();
+            Log.WriteLine(potytext3);
+            Log.WriteSubtleishLine("At: "+potydate3);
+
+            if (potycontent3 != null){
+                Log.WriteLine("\""+potycontent3+"\"");
+            }
 
 
             //CSV FILES + PLOTS
