@@ -79,7 +79,7 @@ namespace MessengerAnalysis
                 {
                     double total = Convert.ToDouble(typeof(UserStats).GetProperty(property).GetValue(universalstats));
 
-                    Log.WriteSubtleishLine(user.Key + ": " + value + " (" + value.PercentOfDouble(total) + ")");
+                    Log.WriteSubtleishLine(user.Key + ": " + value + " (" + value.PercentOfDouble(total) + " of total)");
                 }
             }
             Log.WriteLine();
@@ -99,7 +99,7 @@ namespace MessengerAnalysis
                 if (value != 0)
                 {
                     var percent = Math.Round(value * 100, 2);
-                    Log.WriteSubtleishLine(percent + "% of messages sent by " + user.Key);
+                    Log.WriteSubtleishLine(user.Key + ": " + percent + "%");
                 }
                 
             }

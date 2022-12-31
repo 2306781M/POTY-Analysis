@@ -33,7 +33,7 @@ namespace MessengerAnalysis
         const string EmojiSkull = "\u00f0\u009f\u0092\u0080"; //0xF0 0x9F 0x92 0x80
         const string EmojiAlien = "\u00f0\u009f\u0091\u00bd"; //0xF0 0x9F 0x91 0xBD
         const string EmojiGoblin = "\u00f0\u009f\u0091\u00ba"; //0xF0 0x9F 0x91 0xBA
-        const string EmojiHowl = "\u00f0\u009f\u008d\u0089"; //0xF0 0x9F 0x90 0xBA \u00f0\u009f\u0090\u00ba
+        const string EmojiHowl = "\u00f0\u009f\u0090\u00ba"; //0xF0 0x9F 0x90 0xBA \u00f0\u009f\u0090\u00ba
 
         public static class Log
         {
@@ -80,11 +80,11 @@ namespace MessengerAnalysis
 
         static void Main(string[] args)
         {
-            Log.WriteSubtleLine("MessengerAnalysis 1.0.0");
-            Log.WriteSubtleLine("Copyright (c) 2019 Piers Deseilligny");
+            Log.WriteSubtleLine("Patter of the Year Analysis 1.0.3");
+            Log.WriteSubtleLine("Copyright (c) 2022 Aidan Macrae");
             if (args == null || args.Length == 0)
             {
-                Log.WriteLine("Please specify an input file");
+                Log.WriteLine("Please specify an input file:");
                 Process(Log.ReadLine());
             }
             else
@@ -176,8 +176,8 @@ namespace MessengerAnalysis
 
             Log.WriteLine("Processing " + root.messages.Count + " messages sent in '" + root.title + "' over a period of " + AllDates.Count + " days");
             var start1=start.DateTime;
-            Log.WriteLine("First message sent on " + start1.ToShortDateString() + " at " + start1.ToShortTimeString());
-            Log.WriteLine("Last message sent on " + end.ToShortDateString() + " at " + end.ToShortTimeString());
+            Log.WriteLine("First message sent on " + start1.ToString());
+            Log.WriteLine("Last message sent on " + end.ToString());
 
             Dictionary<string, int> KickedOutCounter = new Dictionary<string, int>();
             int ticker = 0;
@@ -238,7 +238,7 @@ namespace MessengerAnalysis
                 previousMessage = message;
             }
             previousMessage = null;
-            Log.WriteLine("Sanitized message count:" + sanitizedMessages.Count);
+            //Log.WriteLine("Sanitized message count:" + sanitizedMessages.Count);
             Log.WriteLine();
             foreach (var key in AllDates.Keys)
             {
@@ -368,7 +368,7 @@ namespace MessengerAnalysis
                             case EmojiHowl:
                                 senderstats.ReceivedHowl++;
                                 actorstats.GaveHowl++;
-                                patterscore+=3000;
+                                patterscore+=3;
                                 break;
                             case EmojiAlien:
                                 senderstats.ReceivedAlien++;
@@ -393,12 +393,12 @@ namespace MessengerAnalysis
                                 poty2=poty;
                                 poty=patterscore;
                                 potywinner=message.sender_name;
-                                potydate=messageDate;
+                                potydate=messageDateRaw.ToString();
                                 if (message.content != null){potycontent=message.content;}
                             }
-                            else {potywinner2=message.sender_name; potydate2=messageDate; if (message.content != null){potycontent2=message.content;}}
+                            else {potywinner2=message.sender_name; potydate2=messageDateRaw.ToString(); if (message.content != null){potycontent2=message.content;}}
                         }
-                        else {potywinner3=message.sender_name; potydate3=messageDate; if (message.content != null){potycontent3=message.content;}}
+                        else {potywinner3=message.sender_name; potydate3=messageDateRaw.ToString(); if (message.content != null){potycontent3=message.content;}}
                         
                     }
 
@@ -461,47 +461,53 @@ namespace MessengerAnalysis
             Log.WriteBoldLine("HOWL REACTS GIVEN:");
             Helper.WriteStats(GlobalStats, UniversalStats, "GaveHowl");
 
-            Log.WriteBoldLine("TOTAL REACTS GIVEN:");
+            Log.WriteBoldLine("TOTAL REACT VALUE GIVEN:");
             Helper.WriteStats(GlobalStats, UniversalStats, "GaveReact");
 
 
             Log.WriteBoldLine("LAUGH REACTS RECEIVED:");
             Helper.WriteStats(GlobalStats, UniversalStats, "ReceivedLaugh");
+            Log.WriteBoldLine("xLAUGH:");
             Helper.WriteStatsProportional(GlobalStats, UniversalStats, "ReceivedLaugh");
 
             Log.WriteBoldLine("SKULL REACTS RECEIVED:");
             Helper.WriteStats(GlobalStats, UniversalStats, "ReceivedSkull");
+            Log.WriteBoldLine("xSKULL:");
             Helper.WriteStatsProportional(GlobalStats, UniversalStats, "ReceivedSkull");
 
             Log.WriteBoldLine("CROSSBONES REACTS RECEIVED:");
             Helper.WriteStats(GlobalStats, UniversalStats, "ReceivedCrossbones");
+            Log.WriteBoldLine("xCROSSBONES:");
             Helper.WriteStatsProportional(GlobalStats, UniversalStats, "ReceivedCrossbones");
 
             Log.WriteBoldLine("ALIEN REACTS RECEIVED:");
             Helper.WriteStats(GlobalStats, UniversalStats, "ReceivedAlien");
+            Log.WriteBoldLine("xALIEN:");
             Helper.WriteStatsProportional(GlobalStats, UniversalStats, "ReceivedAlien");
 
             Log.WriteBoldLine("HOWL REACTS RECEIVED:");
             Helper.WriteStats(GlobalStats, UniversalStats, "ReceivedHowl");
+            Log.WriteBoldLine("xHOWL:");
             Helper.WriteStatsProportional(GlobalStats, UniversalStats, "ReceivedHowl");
 
             Log.WriteBoldLine("GOBLIN REACTS RECEIVED:");
             Helper.WriteStats(GlobalStats, UniversalStats, "ReceivedGoblin");
+            Log.WriteBoldLine("xGOBLIN:");
             Helper.WriteStatsProportional(GlobalStats, UniversalStats, "ReceivedGoblin");
 
-            //USER-SPECIFIC STATS
-            Log.WriteLine();
-            foreach (var user in GlobalStats)
-            {
-                Log.WriteLine();
-                Log.WriteBoldLine(user.Key.ToUpper());
-                Log.WriteLine("Most given reaction:");
-                Log.WriteSubtleishLine(user.Value.MostGivenReaction());
-                Log.WriteLine("Most received reaction:");
-                Log.WriteSubtleishLine(user.Value.MostReceivedReaction());
-                Log.WriteLine("Talks with:");
-                user.Value.WriteTalksWith(ref GlobalStats);
-            }
+            // //USER-SPECIFIC STATS
+            // Log.WriteLine();
+            // foreach (var user in GlobalStats)
+            // {
+            //     Log.WriteLine();
+            //     Log.WriteBoldLine(user.Key.ToUpper());
+            //     Log.WriteLine("Most given reaction:");
+            //     Log.WriteSubtleishLine(user.Value.MostGivenReaction());
+            //     Log.WriteLine("Most received reaction:");
+            //     Log.WriteSubtleishLine(user.Value.MostReceivedReaction());
+            //     Log.WriteLine("Talks with:");
+            //     user.Value.WriteTalksWith(ref GlobalStats);
+            // }
 
             //SUSTAINED PATTER
             Log.WriteLine();
@@ -513,7 +519,7 @@ namespace MessengerAnalysis
             Log.WriteBoldLine("PATTER OF THE YEAR WINNER:");
             string potytext = potywinner+", with a total patter rating of "+poty.ToString();
             Log.WriteLine(potytext);
-            Log.WriteSubtleishLine("At: "+potydate);
+            Log.WriteSubtleishLine("On: "+potydate);
             
             if (potycontent != null){
                 Log.WriteLine("\""+potycontent+"\"");
@@ -524,7 +530,7 @@ namespace MessengerAnalysis
             Log.WriteBoldLine("SECOND PLACE:");
             string potytext2 = potywinner2+", with a total patter rating of "+poty2.ToString();
             Log.WriteLine(potytext);
-            Log.WriteSubtleishLine("At: "+potydate2);
+            Log.WriteSubtleishLine("On: "+potydate2);
 
             if (potycontent2 != null){
                 Log.WriteLine("\""+potycontent2+"\"");
@@ -535,7 +541,7 @@ namespace MessengerAnalysis
             Log.WriteBoldLine("THIRD PLACE:");
             string potytext3 = potywinner3+", with a total patter rating of "+poty3.ToString();
             Log.WriteLine(potytext3);
-            Log.WriteSubtleishLine("At: "+potydate3);
+            Log.WriteSubtleishLine("On: "+potydate3);
 
             if (potycontent3 != null){
                 Log.WriteLine("\""+potycontent3+"\"");
